@@ -39,6 +39,21 @@ app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//Apply Cookies
+app.use(
+    session({
+        secret: "mathxsecret",
+        resave: true,
+        saveUninitialized: true
+    })
+);
+app.use(cookieParser("mathxsecret"));
+
+//Apply Passport
+app.use(passport.initialize());
+app.use(passport.session());
+require('./configs/passport')(passport);
+
 // 3) ROUTES
 // app.use('/', viewRouter);
 // app.use('/api/v1/tours', tourRouter);
