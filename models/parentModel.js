@@ -4,10 +4,12 @@ const User = require('./userModel');
 const parentSchema = new mongoose.Schema({
     studentId: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Student',
-        required: [true, '[REQUIRED ERROR] A parent must link with a studentId!']
+        ref: 'Student'
     }
-})
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
 
 parentSchema.pre(/^find/, function (next) {
     this.populate({
@@ -17,5 +19,5 @@ parentSchema.pre(/^find/, function (next) {
     next();
 });
 
-const Student = User.discriminator('Student', parentSchema);
-module.exports = mongoose.model('Student');
+const Parent = User.discriminator('Parent', parentSchema);
+module.exports = mongoose.model('Parent');

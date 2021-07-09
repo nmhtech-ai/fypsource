@@ -17,17 +17,25 @@ const studentSchema = new mongoose.Schema({
     },
     parentId: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Parent',
-        required: [true, '[REQUIRED ERROR] A user must link with a authId!']
+        ref: 'Parent'
     }
-})
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
 
 studentSchema.pre(/^find/, function (next) {
-    this.populate({
-        path: 'parentId',
-        select: '-__v'
-    })
+    // this.populate({
+    //     path: 'parentId',
+    //     select: '-__v'
+    // })
     next();
+});
+
+studentSchema.virtual('parent', {
+    ref: 'Parent',
+    foreignField: 'studentId',
+    localField: '_id'
 });
 
 const Student = User.discriminator('Student', studentSchema);

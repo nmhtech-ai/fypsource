@@ -1,5 +1,5 @@
-export const DEVELOPERS = "Developers";
-export const CLIENTS = "Clients";
+exports.DEVELOPERS = "Developers";
+exports.CLIENTS = "Clients";
 
 
 

@@ -1,6 +1,11 @@
 const cors = require('cors');
 const express = require('express');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const session = require("express-session");
+const passport = require("passport");
+
+const userRouter = require('./routes/userRoutes');
 
 
 // Start express app
@@ -55,7 +60,7 @@ app.use(passport.session());
 require('./configs/passport')(passport);
 
 // 3) ROUTES
-// app.use('/', viewRouter);
+app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/tours', tourRouter);
 // app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/reviews', reviewRouter);

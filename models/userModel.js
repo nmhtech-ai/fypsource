@@ -4,7 +4,7 @@ const groups = require('../utils/groups');
 
 const baseOptions = {
     discriminatorKey: 'itemtype',
-    collection: 'user'
+    collection: 'users'
 }
 
 const userSchema = new mongoose.Schema({

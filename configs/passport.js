@@ -1,5 +1,5 @@
 const Auth = require('../models/authModel');
-// const User = require('../models/userModel');
+const User = require('../models/userModel');
 const bcrypt = require("bcrypt");
 const localStrategy = require("passport-local").Strategy;
 
@@ -27,12 +27,13 @@ module.exports = function (passport) {
     });
 
     passport.deserializeUser((id, done) => {
-        User.findOne({ loginId: id }, (err, user) => {
+        User.findOne({ authId: id }, (err, user) => {
+
             const userDetails = {
                 _id: user._id,
                 fullname: user.fullname,
-                username: user.loginId.username,
-                createdAt: user.loginId.createdAt
+                username: user.authId.username,
+                createdAt: user.authId.createdAt
             }
             done(err, userDetails);
         });
