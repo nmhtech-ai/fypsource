@@ -6,7 +6,8 @@ const session = require("express-session");
 const passport = require("passport");
 
 const userRouter = require('./routes/userRoutes');
-
+const topicRouter = require('./routes/topicRoutes');
+const subtopicRouter = require('./routes/subtopicRoutes');
 
 // Start express app
 const app = express();
@@ -61,7 +62,8 @@ require('./configs/passport')(passport);
 
 // 3) ROUTES
 app.use('/api/v1/users', userRouter);
-// app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/topic', topicRouter);
+app.use('/api/v1/subtopic', subtopicRouter);
 // app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/reviews', reviewRouter);
 // app.use('/api/v1/bookings', bookingRouter);

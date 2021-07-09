@@ -51,12 +51,18 @@ const topicSchema = new mongoose.Schema({
 );
 
 topicSchema.pre(/^find/, function (next) {
-    // this.populate({
-    //     path: 'subtopicId',
-    //     select: '-__v'
-    // })
+    this.populate({
+        path: 'subtopicId',
+        select: '-__v -topicId -updatedAt'
+    })
     next();
 });
+
+// topicSchema.virtual('subtopics', {
+//     ref: 'Subtopic',
+//     foreignField: '_id',
+//     localField: 'subtopicId'
+// });
 
 topicSchema.pre('save', async function (next) {
     this.updatedAt = Date.now() - 1000;
