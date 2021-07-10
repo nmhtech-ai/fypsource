@@ -15,6 +15,18 @@ const subtopicSchema = new mongoose.Schema({
             }
         }
     ],
+    qskillId: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'QSkill'
+        }
+    ],
+    qtypeId: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'QType'
+        }
+    ],
     // description: {
     //     type: String,
     //     trim: true
@@ -33,6 +45,10 @@ const subtopicSchema = new mongoose.Schema({
 subtopicSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'topicId',
+        select: '-__v -subtopicId -updatedAt'
+    })
+    this.populate({
+        path: 'qtypeId',
         select: '-__v -subtopicId -updatedAt'
     })
     next();

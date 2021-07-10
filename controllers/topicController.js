@@ -36,6 +36,8 @@ exports.updateTopic = catchAsync(async (req, res, next) => {
         runValidators: true
     });
 
+    await topic.save();
+
     if (!topic) {
         return next(new AppError('No document found with that ID', 404));
     }

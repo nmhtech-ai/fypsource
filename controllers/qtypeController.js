@@ -1,76 +1,78 @@
 const Subtopic = require('../models/subtopicModel');
-const Topic = require('../models/topicModel');
+const QType = require('../models/qtypeModel');
 const catchAsync = require("../utils/catchAsync");
 const factory = require('./handlerFactory');
-const AppError = require('./../utils/appError');
+const AppError = require('../utils/appError');
 
 
-exports.createSubtopic = catchAsync(async (req, res, next) => {
-    const subtopic = await Subtopic.create(req.body);
-    const topic = await Topic.findById(subtopic.topicId);
-    topic.subtopicId.push(subtopic._id);
-    await topic.save();
+exports.createQType = catchAsync(async (req, res, next) => {
+    const qtype = await QType.create(req.body);
+    const subtopic = await Subtopic.findById(qtype.subtopicId);
+    subtopic.qtypeId.push(qtype._id);
+    await subtopic.save();
 
     res.status(201).json({
         status: 'success',
         data: {
-            data: subtopic
+            data: qtype
         }
     });
 });
 
-exports.getAllSubtopics = catchAsync(async (req, res, next) => {
+exports.getAllQTypes = catchAsync(async (req, res, next) => {
 
-    const subtopics = await Subtopic.find({ "topicId._id": req.body._id });
+    const qtype = await QType.find({ "subtopicId._id": req.body._id });
 
     res.status(200).json({
         status: 'success',
         data: {
-            data: subtopics
+            data: qtype
         }
     });
 });
 
-exports.getSubtopic = catchAsync(async (req, res, next) => {
-    const subtopic = await Subtopic.findById(req.body._id);
+exports.getQType = catchAsync(async (req, res, next) => {
+    const qtype = await QType.findById(req.body._id);
 
     res.status(200).json({
         status: 'success',
         data: {
-            data: subtopic
+            data: qtype
         }
     });
 });
 
-exports.updateSubtopic = catchAsync(async (req, res, next) => {
+exports.updateQType = catchAsync(async (req, res, next) => {
 
-    const subtopic = await Subtopic.findByIdAndUpdate(req.body._id, req.body, {
+    const qtype = await QType.findByIdAndUpdate(req.body._id, req.body, {
         new: true,
         runValidators: true
     });
 
-    if (!subtopic) {
+    await qtype.save();
+
+    if (!qtype) {
         return next(new AppError('No document found with that ID', 404));
     }
 
     res.status(200).json({
         status: 'success',
         data: {
-            data: subtopic
+            data: qtype
         }
     });
 
 
 });
 
-exports.deleteSubtopic = catchAsync(async (req, res, next) => {
+exports.deleteQType = catchAsync(async (req, res, next) => {
     if (req.isAuthenticated()) {
         if (req.body.editor === "Administrator") {
 
-            const subtopic = await Subtopic.findById(req.body._id);
-            const topic = await Topic.findById(subtopic.topicId);
-            topic.subtopicId.pull(subtopic._id)
-            await Subtopic.findByIdAndRemove(subtopic._id);
+            const qtype = await QType.findById(req.body._id);
+            const subtopic = await Subtopic.findById(qtype.subtopicId);
+            subtopic.qtypeId.pull(qtype._id)
+            await QType.findByIdAndRemove(qtype._id);
 
 
             res.status(200).json({

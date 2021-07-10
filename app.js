@@ -8,6 +8,8 @@ const passport = require("passport");
 const userRouter = require('./routes/userRoutes');
 const topicRouter = require('./routes/topicRoutes');
 const subtopicRouter = require('./routes/subtopicRoutes');
+const qtypeRouter = require('./routes/qtypeRoutes');
+const qskillRouter = require('./routes/qskillRoutes');
 
 // Start express app
 const app = express();
@@ -64,8 +66,7 @@ require('./configs/passport')(passport);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/topic', topicRouter);
 app.use('/api/v1/subtopic', subtopicRouter);
-// app.use('/api/v1/users', userRouter);
-// app.use('/api/v1/reviews', reviewRouter);
-// app.use('/api/v1/bookings', bookingRouter);
+app.use('/api/v1/qtype', qtypeRouter);
+app.use('/api/v1/qskill', qskillRouter);
 
 module.exports = app;
