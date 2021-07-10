@@ -7,15 +7,27 @@ const { STUDENT } = require("../utils/roles");
 
 exports.getUser = catchAsync(async (req, res, next) => {
     if (req.isAuthenticated()) {
-        User.findOne({ _id: req.user._id }, async (err, user) => {
-            if (err) throw err;
-            if (user) {
+
+        const user = await User.findOne({ _id: req.body._id });
+
+        if (user) {
+
+            if (user.role === 'Student') {
+                const student = await Student.findById(req.body._id).populate('parent').populate('oRating');
+
+                res.status(200).json({
+                    status: 'success',
+                    data: student
+                });
+            }
+            else {
                 res.status(200).json({
                     status: 'success',
                     data: user
                 });
             }
-        });
+        }
+
     } else {
         res.status(401).json({
             status: 'error',

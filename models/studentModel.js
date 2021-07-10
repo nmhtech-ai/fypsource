@@ -18,6 +18,14 @@ const studentSchema = new mongoose.Schema({
     parentId: {
         type: mongoose.Schema.ObjectId,
         ref: 'Parent'
+    },
+    oRatingId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'ORating'
+    },
+    tRatingId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'TRating'
     }
 }, {
     toJSON: { virtuals: true },
@@ -25,10 +33,14 @@ const studentSchema = new mongoose.Schema({
 });
 
 studentSchema.pre(/^find/, function (next) {
-    // this.populate({
-    //     path: 'parentId',
-    //     select: '-__v'
-    // })
+    this.populate({
+        path: 'oRatingId',
+        select: '-__v -userId'
+    })
+    this.populate({
+        path: 'tRatingId',
+        select: '-__v -userId'
+    })
     next();
 });
 

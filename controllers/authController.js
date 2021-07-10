@@ -1,5 +1,7 @@
 const Auth = require("../models/authModel");
 const User = require("../models/userModel");
+const ORating = require('../models/oRatingModel');
+const TRating = require('../models/tRatingModel');
 const Student = require("../models/studentModel");
 const Parent = require("../models/parentModel");
 const catchAsync = require("../utils/catchAsync");
@@ -64,14 +66,28 @@ exports.signup = catchAsync(async (req, res, next) => {
 
             await parentInfo.save();
 
+            //Create Rating Profile
+            const oRating = new ORating({
+                userId: studentInfo._id
+            });
+            const tRating = new TRating({
+                userId: studentInfo._id
+            });
+
+            await oRating.save();
+            await tRating.save();
+
+            //Link Parent, Rating Profile to student
             studentInfo.parentId = parentInfo._id;
+            studentInfo.oRatingId = oRating._id;
+            studentInfo.tRatingId = tRating._id;
 
             await studentInfo.save();
 
-            const stu = await Student.findById(studentInfo._id).populate('parent');
-            console.log(stu);
-            const ptu = await Parent.findById(parentInfo._id);
-            console.log(ptu);
+            // const stu = await Student.findById(studentInfo._id).populate('parent');
+            // console.log(stu);
+            // const ptu = await Parent.findById(parentInfo._id);
+            // console.log(ptu);
 
             console.log("\x1b[43m\x1b[34m%s\x1b[0m", `[SUCCESS] Users information created [${req.body.susername}] and [${req.body.pusername}]`);
 
