@@ -6,6 +6,10 @@ const baseOptions = {
 }
 
 const logSchema = new mongoose.Schema({
+    performerId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    },
     userId: {
         type: mongoose.Schema.ObjectId,
         ref: 'User'
@@ -25,10 +29,17 @@ const logSchema = new mongoose.Schema({
 }, baseOptions);
 
 logSchema.pre(/^find/, function (next) {
-    this.populate({
-        path: 'userId',
-        select: 'user.authId.username'
-    })
+    // this.populate({
+    //     path: 'performerId',
+    //     select: 'authId'
+    // })
+    // this.populate({
+    //     path: 'userId.authId',
+    //     // populate: {
+    //     //     path: 'authId',
+    //     //     select: 'username'
+    //     // }
+    // })
     next();
 });
 

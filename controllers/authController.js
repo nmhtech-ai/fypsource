@@ -4,6 +4,7 @@ const ORating = require('../models/oRatingModel');
 const TRating = require('../models/tRatingModel');
 const Student = require("../models/studentModel");
 const Parent = require("../models/parentModel");
+const Log = require("../models/logModel");
 const catchAsync = require("../utils/catchAsync");
 const passport = require('passport');
 
@@ -84,16 +85,31 @@ exports.signup = catchAsync(async (req, res, next) => {
 
             await studentInfo.save();
 
-            // const stu = await Student.findById(studentInfo._id).populate('parent');
-            // console.log(stu);
-            // const ptu = await Parent.findById(parentInfo._id);
-            // console.log(ptu);
+            const studentLog = new Log({
+                performerId: null,
+                userId: studentInfo._id,
+                actionType: "User Created",
+                description: `[SUCCESS] Users information created [${req.body.susername}]`,
+            })
+
+            const parentLog = new Log({
+                performerId: null,
+                userId: parentInfo._id,
+                actionType: "User Created",
+                description: `[SUCCESS] Users information created [${req.body.pusername}]`,
+            })
+
+            await studentLog.save();
+            await parentLog.save();
 
             console.log("\x1b[43m\x1b[34m%s\x1b[0m", `[SUCCESS] Users information created [${req.body.susername}] and [${req.body.pusername}]`);
 
             res.status(200).json({
                 status: 'success',
-                data: null
+                data: {
+                    studentLog: studentLog,
+                    parentLog: parentLog
+                }
             });
 
         } else if (dupStudent !== null && dupParent !== null) {
@@ -162,13 +178,26 @@ exports.signup = catchAsync(async (req, res, next) => {
 
                 await newUserInfo.save();
 
+                const systemLog = new Log({
+                    performerId: null,
+                    userId: newUserInfo._id,
+                    actionType: "User Created",
+                    description: `[SUCCESS] Users information created [${req.body.username}]`,
+                })
+
+                await systemLog.save();
+
                 console.log("\x1b[43m\x1b[34m%s\x1b[0m", `[SUCCESS] User information created [${req.body.username}]`);
 
+                const log = await Log.findById(systemLog._id);
                 const user = await User.findById(newUserInfo._id);
 
                 res.status(200).json({
                     status: 'success',
-                    data: user
+                    data: {
+                        user: user,
+                        log: log
+                    }
                 });
             }
         });
@@ -189,8 +218,18 @@ exports.login = catchAsync(async (req, res, next) => {
                 }
             });
         } else {
-            req.logIn(user, (err) => {
+            req.logIn(user, async (err) => {
                 if (err) throw err;
+
+                const systemLog = new Log({
+                    performerId: user._id,
+                    userId: null,
+                    actionType: "User Login",
+                    description: `[SUCCESS] User login [${user.username}]`,
+                })
+
+                await systemLog.save();
+
                 res.status(200).json({
                     status: 'success',
                     data: {

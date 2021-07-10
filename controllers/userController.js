@@ -44,13 +44,14 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
         if (req.body.editor === "Administrator") {
             const userId = req.body._id;
             const user = await User.findOne({ _id: userId });
-            console.log(user);
+
             if (user.role === "Student") {
                 const parent = await User.findById(user.parentId);
                 await Auth.findByIdAndRemove(parent.authId._id);
                 await User.findByIdAndRemove(parent._id);
                 await Auth.findByIdAndRemove(user.authId._id);
                 await User.findByIdAndRemove(userId);
+
                 res.status(200).json({
                     status: 'success',
                     data: null
@@ -73,6 +74,7 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
                     data: null
                 });
             }
+
         } else {
             res.status(401).json({
                 status: 'error',

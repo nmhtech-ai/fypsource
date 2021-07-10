@@ -1,4 +1,3 @@
-const Subtopic = require('../models/subtopicModel');
 const QSkill = require('../models/qskillModel');
 const catchAsync = require("../utils/catchAsync");
 const factory = require('./handlerFactory');
