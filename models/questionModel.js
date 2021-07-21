@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const questionSchema = new mongoose.Schema({
     topicId: {
-        type: mongoose.Schema.ObectId,
+        type: mongoose.Schema.ObjectId,
         ref: 'Topic'
     },
-    subopicId: {
+    subtopicId: {
         type: mongoose.Schema.ObjectId,
         ref: 'Subtopic'
     },
@@ -29,34 +29,48 @@ const questionSchema = new mongoose.Schema({
     answer: {
         type: String
     },
-    p1Skill: {
+    p1Type: {
         type: mongoose.Schema.ObjectId,
-        ref: 'QSkill'
+        ref: 'QType'
     },
-    p2Skill: {
+    p2Type: {
         type: mongoose.Schema.ObjectId,
-        ref: 'QSkill'
+        ref: 'QType'
     },
-    p1hints: {
-        langauge: {
+    p1hints: [{
+        language: {
             type: String,
             trim: true
         },
         hints: {
             type: String,
             trim: true
+        },
+        difficulty: {
+            type: String,
+            enum: {
+                values: ['Basic', 'Intermediate', 'Advance'],
+                message: '[ENUM ERROR] Difficulty is either: Basic, Intermediate, Advance!'
+            }
         }
-    },
-    p2hints: {
-        langauge: {
+    }],
+    p2hints: [{
+        language: {
             type: String,
             trim: true
         },
         hints: {
             type: String,
             trim: true
+        },
+        difficulty: {
+            type: String,
+            enum: {
+                values: ['Basic', 'Intermediate', 'Advance'],
+                message: '[ENUM ERROR] Difficulty is either: Basic, Intermediate, Advance!'
+            }
         }
-    },
+    }],
     updatedAt: {
         type: Date,
         default: Date.now
@@ -64,7 +78,7 @@ const questionSchema = new mongoose.Schema({
 });
 
 
-qtypeSchema.pre(/^find/, function (next) {
+questionSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'subtopicId',
         select: 'name'
@@ -73,18 +87,18 @@ qtypeSchema.pre(/^find/, function (next) {
         path: 'topicId',
         select: 'name'
     })
-    this.populate({
-        path: 'p1Skill',
-        select: 'name'
-    })
-    this.populate({
-        path: 'p2Skill',
-        select: 'name'
-    })
+    // this.populate({
+    //     path: 'p1Type',
+    //     select: 'name'
+    // })
+    // this.populate({
+    //     path: 'p2Type',
+    //     select: 'name'
+    // })
     next();
 });
 
-qtypeSchema.pre('save', async function (next) {
+questionSchema.pre('save', async function (next) {
     this.updatedAt = Date.now() - 1000;
     next();
 })

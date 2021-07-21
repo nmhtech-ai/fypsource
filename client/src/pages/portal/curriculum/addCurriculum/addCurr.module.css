@@ -1,0 +1,64 @@
+.select {
+	margin-bottom: 10px;
+}
+
+.input {
+	margin-bottom: 10px;
+}
+
+.input:focus,
+.select:focus {
+	box-shadow: none;
+}
+
+.container {
+	background-color: rgb(240, 240, 240);
+	border-radius: 1rem;
+	border: 1px solid rgb(223, 223, 223);
+	margin-top: 2rem;
+	padding: 2rem;
+	text-align: center;
+}
+
+.leftContainer {
+	text-align: end;
+}
+
+.label {
+	font-weight: 500;
+}
+
+.text {
+	color: rgb(75, 75, 75);
+	font-weight: 300;
+	margin-left: 10px;
+}
+
+.button {
+	border-radius: 10px;
+	font-size: 15px;
+	position: relative;
+	float: right;
+	width: 10rem;
+	margin: 30px 10px 0px 0px;
+}
+
+@media only screen and (max-width: 600px) {
+	.button {
+		margin-top: 10px;
+		margin-bottom: 0px;
+	}
+}
+
+@media only screen and (max-width: 360px) {
+	.button {
+		width: 100%;
+	}
+
+	.label,
+	.text,
+	.input,
+	.select {
+		font-size: 12px;
+	}
+}

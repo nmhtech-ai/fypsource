@@ -10,6 +10,9 @@ const topicRouter = require('./routes/topicRoutes');
 const subtopicRouter = require('./routes/subtopicRoutes');
 const qtypeRouter = require('./routes/qtypeRoutes');
 const qskillRouter = require('./routes/qskillRoutes');
+const questionRouter = require('./routes/questionRoutes');
+const exerciseRouter = require('./routes/exerciseRoutes');
+
 
 // Start express app
 const app = express();
@@ -68,5 +71,7 @@ app.use('/api/v1/topic', topicRouter);
 app.use('/api/v1/subtopic', subtopicRouter);
 app.use('/api/v1/qtype', qtypeRouter);
 app.use('/api/v1/qskill', qskillRouter);
+app.use('/api/v1/question', questionRouter);
+app.use('/api/v1/exercise', exerciseRouter);
 
 module.exports = app;

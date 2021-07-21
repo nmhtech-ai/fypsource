@@ -8,21 +8,27 @@ const tRatingSchema = new mongoose.Schema({
     ratings: [{
         typeId: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Skill'
+            ref: 'QType'
         },
         score: {
+            type: Number
+        },
+        correctNo: {
+            type: Number
+        },
+        wrongNo: {
             type: Number
         }
     }]
 });
 
 tRatingSchema.pre(/^find/, function (next) {
+    // this.populate({
+    //     path: 'userId',
+    //     select: 'authId.username'
+    // })
     this.populate({
-        path: 'userId',
-        select: 'authId.username'
-    })
-    this.populate({
-        path: 'rating.typeId',
+        path: 'ratings.typeId',
         select: '-_v -updatedAt'
     })
     next();

@@ -1,0 +1,24 @@
+.portalContent {
+	background-color: white;
+	bottom: 0;
+	left: 0;
+	overflow: auto;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: -1;
+}
+
+@media only screen and (min-width: 600px) {
+	.portalContent {
+		padding: 4rem 4rem 4rem 9rem;
+	}
+}
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+	.portalContent {
+		margin-bottom: 5rem;
+		padding: 4rem 3rem;
+	}
+}

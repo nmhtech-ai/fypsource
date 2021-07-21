@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Log = require('./logModel');
 
 const pLogSchema = new mongoose.Schema({
+    exerciseId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Exercise'
+    },
     questionId: {
         type: mongoose.Schema.ObjectId,
         ref: 'Question'
@@ -10,7 +14,10 @@ const pLogSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    rating: {
+    status: {
+        type: String
+    },
+    time: {
         type: Number
     }
 }, {

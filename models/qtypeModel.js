@@ -11,6 +11,9 @@ const qtypeSchema = new mongoose.Schema({
         },
         description: {
             type: String
+        },
+        unknownPosition: {
+            type: String
         }
     }],
     updatedAt: {

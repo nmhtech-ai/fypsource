@@ -1,0 +1,8 @@
+{
+    "username.label": "Username",
+    "password.label": "Password",
+    "login.label": "Login",
+    "signup.label": "Sign Up",
+    "forgot.label": "Forgot username or password?",
+    "invalid.label": "Invalid username or password"
+}

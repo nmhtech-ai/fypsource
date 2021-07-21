@@ -6,7 +6,9 @@ const AppError = require('../utils/appError');
 
 
 exports.createQType = catchAsync(async (req, res, next) => {
+    console.log(req.body);
     const qtype = await QType.create(req.body);
+    console.log(qtype);
     const subtopic = await Subtopic.findById(qtype.subtopicId);
     subtopic.qtypeId.push(qtype._id);
     await subtopic.save();
@@ -71,7 +73,11 @@ exports.deleteQType = catchAsync(async (req, res, next) => {
 
             const qtype = await QType.findById(req.body._id);
             const subtopic = await Subtopic.findById(qtype.subtopicId);
-            subtopic.qtypeId.pull(qtype._id)
+            if (subtopic !== null) {
+                if (subtopic.qtypeId !== null) {
+                    subtopic.qtypeId.pull(qtype._id)
+                }
+            }
             await QType.findByIdAndRemove(qtype._id);
 
 

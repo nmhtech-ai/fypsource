@@ -65,6 +65,14 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Auth',
         required: [true, '[REQUIRED ERROR] A user must link with a authId!']
+    },
+    language: {
+        type: String,
+        enum: {
+            values: ["zh-HK", "en"],
+            message: '[ENUM ERROR] Language is invalid!'
+        },
+        required: [true, "[REQUIRED ERROR] Language is required!"]
     }
 }, baseOptions);
 

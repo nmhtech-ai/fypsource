@@ -1,0 +1,13 @@
+.row:hover {
+	cursor: pointer;
+}
+
+.row:hover {
+	cursor: pointer;
+}
+
+.tablediv {
+	margin-bottom: 30px;
+	overflow-x: auto;
+	font-size: 14px;
+}

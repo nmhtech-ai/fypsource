@@ -10,6 +10,7 @@ router.get('/logout', authController.logout);
 
 router
     .route('/')
+    .post(userController.getAllUsers)
     .get(userController.getAllUsers);
 
 router
@@ -19,8 +20,16 @@ router
     .patch(userController.updateUser);
 
 router
+    .route('/auth')
+    .get(userController.getCurrentUser);
+
+router
     .route('/password')
     .post(userController.updatePassword);
+
+router
+    .route('/ratings')
+    .get(userController.getRatings);
 
 
 module.exports = router;

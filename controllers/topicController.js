@@ -8,12 +8,12 @@ exports.createTopic = factory.createOne(Topic);
 
 exports.getAllTopics = catchAsync(async (req, res, next) => {
 
-    const topics = await Topic.find({ grade: req.body.grade });
+    const topics = await Topic.find({ grade: req.query.grade });
 
     res.status(200).json({
         status: 'success',
         data: {
-            data: topics
+            topics
         }
     });
 });

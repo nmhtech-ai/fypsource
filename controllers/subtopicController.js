@@ -21,18 +21,16 @@ exports.createSubtopic = catchAsync(async (req, res, next) => {
 
 exports.getAllSubtopics = catchAsync(async (req, res, next) => {
 
-    const subtopics = await Subtopic.find({ "topicId._id": req.body._id });
+    const subtopics = await Subtopic.find({ "topicId.code": req.query.code });
 
     res.status(200).json({
         status: 'success',
-        data: {
-            data: subtopics
-        }
+        subtopics: subtopics
     });
 });
 
 exports.getSubtopic = catchAsync(async (req, res, next) => {
-    const subtopic = await Subtopic.findById(req.body._id);
+    const subtopic = await Subtopic.findById(req.query._id);
 
     res.status(200).json({
         status: 'success',

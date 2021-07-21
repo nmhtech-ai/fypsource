@@ -5,24 +5,46 @@ const oRatingSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     },
+    difficulties: [{
+        subtopicId: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Subtopic'
+        },
+        difficulty: {
+            type: String,
+            enum: {
+                values: ['Basic', 'Intermediate', 'Advance'],
+                message: '[ENUM ERROR] Difficulty is either: Basic, Intermediate, Advance!'
+            }
+        },
+        averageTime: {
+            type: Number
+        }
+    }],
     ratings: [{
         skillId: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Skill'
+            ref: 'QSkill'
         },
         score: {
+            type: Number
+        },
+        correctNo: {
+            type: Number
+        },
+        wrongNo: {
             type: Number
         }
     }]
 });
 
 oRatingSchema.pre(/^find/, function (next) {
+    // this.populate({
+    //     path: 'userId',
+    //     select: 'authId.username'
+    // })
     this.populate({
-        path: 'userId',
-        select: 'authId.username'
-    })
-    this.populate({
-        path: 'rating.skillId',
+        path: 'ratings.skillId',
         select: '-_v -updatedAt'
     })
     next();

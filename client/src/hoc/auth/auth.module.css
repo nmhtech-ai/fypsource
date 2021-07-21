@@ -1,0 +1,15 @@
+.card {
+	-moz-box-shadow: -2px 0px 48px -8px rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow: -2px 0px 48px -8px rgba(0, 0, 0, 0.4);
+	background-color: white;
+	border-radius: 20px;
+	box-shadow: -2px 0px 48px -8px rgba(0, 0, 0, 0.4);
+	max-width: 500px;
+	padding: 10px 40px;
+}
+
+.brandLogo {
+	display: flex;
+	justify-content: center;
+	margin: 40px auto 30px;
+}

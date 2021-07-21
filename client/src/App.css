@@ -1,0 +1,35 @@
+:root {
+	font-size: 16px;
+	font-family: \'Open Sans\';
+	--text-primary: #979696;
+	--text-secondary: #ececec;
+	--bg-primary: #051e34;
+	--bg-secondary: #141418;
+	--bg-tertiary: #202f3b8e;
+	--transition-speed: 400ms;
+}
+
+body {
+	background-color: white;
+	/* background-color: rgb(49, 65, 78); */
+	height: 100%;
+	width: 100%;
+}
+
+body::-webkit-scrollbar {
+	width: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: #051e34;
+}
+
+.App {
+	width: 100%;
+	height: 100%;
+}

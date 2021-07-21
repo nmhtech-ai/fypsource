@@ -43,10 +43,10 @@ const subtopicSchema = new mongoose.Schema({
 );
 
 subtopicSchema.pre(/^find/, function (next) {
-    // this.populate({
-    //     path: 'topicId',
-    //     select: '-__v -subtopicId -updatedAt'
-    // })
+    this.populate({
+        path: 'topicId',
+        select: '-__v -subtopicId -updatedAt'
+    })
     this.populate({
         path: 'qtypeId',
         select: '-__v -subtopicId -updatedAt'

@@ -9,6 +9,14 @@ const qskillSchema = new mongoose.Schema({
             type: String
         }
     }],
+    hints: [{
+        language: {
+            type: String
+        },
+        description: {
+            type: String
+        }
+    }],
     updatedAt: {
         type: Date,
         default: Date.now

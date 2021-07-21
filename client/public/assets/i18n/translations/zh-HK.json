@@ -1,0 +1,8 @@
+{
+    "username.label": "用戶名稱",
+    "password.label": "密碼",
+    "login.label": "登入",
+    "signup.label": "註冊",
+    "forgot.label": "忘記用戶名稱或密碼？",
+    "invalid.label": "用戶名稱或密碼錯誤"
+}

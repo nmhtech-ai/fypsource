@@ -2,8 +2,103 @@ const User = require("../models/userModel");
 const Auth = require("../models/authModel");
 const Student = require("../models/studentModel");
 const Parent = require("../models/parentModel");
+const ORating = require('../models/oRatingModel');
+const TRating = require('../models/tRatingModel');
 const catchAsync = require("../utils/catchAsync");
-const { STUDENT } = require("../utils/roles");
+// const { STUDENT } = require("../utils/roles");
+const bcrypt = require('bcrypt');
+
+exports.getRatings = catchAsync(async (req, res, next) => {
+    let userId = null;
+    const queryUser = await User.findOne({ _id: req.user._id });
+    if (queryUser !== null) {
+        // console.log(queryUser);
+        if (queryUser.role === 'Parent') {
+            userId = queryUser.studentId;
+            // console.log(userId);
+        } else {
+            userId = queryUser._id;
+        }
+        const oRating = await ORating.findOne({ "userId": userId });
+        const tRating = await TRating.findOne({ "userId": userId });
+
+        // if (oRating !== null) {
+        //     console.log(oRating.ratings);
+        //     console.log(tRating.ratings);
+        // }
+
+
+        res.status(200).json({
+            status: 'success',
+            oRating: oRating,
+            tRating: tRating
+        });
+    }
+});
+
+exports.getCurrentUser = catchAsync(async (req, res, next) => {
+    if (req.isAuthenticated()) {
+        const user = await User.findOne({ _id: req.user._id });
+
+        if (user) {
+            res.status(200).json({
+                status: 'success',
+                user: user,
+                isAuthenticated: true,
+                group: user.group,
+                role: user.role
+            });
+        }
+
+    } else {
+        res.status(200).json({
+            status: 'error',
+            message: '[ERROR] Unauthorized',
+            isAuthenticated: false
+        });
+    };
+});
+
+// exports.getCurrentUser = catchAsync(async (req, res, next) => {
+//     if (req.isAuthenticated()) {
+//         const user = await User.findOne({ _id: req.user._id });
+
+//         if (user) {
+
+//             if (user.role === 'Student') {
+//                 const student = await Student.findById(req.user._id).populate('parent').populate('oRating');
+
+//                 res.status(200).json({
+//                     status: 'success',
+//                     data: {
+//                         user: student,
+//                         isAuthenticated: true,
+//                         group: user.group,
+//                         role: student.role
+//                     }
+//                 });
+//             }
+//             else {
+//                 res.status(200).json({
+//                     status: 'success',
+//                     user: user,
+//                     isAuthenticated: true,
+//                     group: user.group,
+//                     role: user.role
+//                 });
+//             }
+//         }
+
+//     } else {
+//         res.status(401).json({
+//             status: 'error',
+//             message: '[ERROR] Unauthorized',
+//             data: {
+//                 isAuthenticated: false
+//             }
+//         });
+//     };
+// });
 
 exports.getUser = catchAsync(async (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -168,6 +263,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
             User.find({ group: req.body.group }, (err, docs) => {
                 if (err) throw err;
                 if (docs) {
+                    console.log(docs);
                     res.send(docs);
                 }
             })
@@ -217,32 +313,29 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
                         res.status(200).json({
                             status: 'success',
                             message: '[SUCCESS] Password Changed!',
-                            data: {
-                                success: true,
-                                duplicated: false
-                            }
+                            success: true,
+                            duplicated: false
                         });
                     } else {
-                        res.status(400).json({
+                        res.status(200).json({
                             status: 'error',
                             message: '[FAILURE] Incorrect password!',
-                            data: {
-                                success: false,
-                                duplicated: false
-                            }
+                            success: false,
+                            duplicated: false
+
                         });
                     }
                 } else {
-                    res.status(400).json({
+                    res.status(200).json({
                         status: 'error',
                         message: '[FAILURE] Cannot use the same password!',
-                        data: {
-                            success: false,
-                            duplicated: true
-                        }
+                        success: false,
+                        duplicated: true
                     });
                 }
             });
         }
     });
 });
+
+

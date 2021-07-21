@@ -38,7 +38,8 @@ exports.signup = catchAsync(async (req, res, next) => {
                 group: "Clients",
                 authId: studentAuth._id,
                 grade: req.body.sgrade,
-                school: req.body.sschool
+                school: req.body.sschool,
+                language: "zh-HK"
             });
 
             await studentInfo.save();
@@ -62,7 +63,8 @@ exports.signup = catchAsync(async (req, res, next) => {
                 role: "Parent",
                 group: "Clients",
                 authId: parentAuth._id,
-                studentId: studentInfo._id
+                studentId: studentInfo._id,
+                language: "zh-HK"
             });
 
             await parentInfo.save();
@@ -174,6 +176,7 @@ exports.signup = catchAsync(async (req, res, next) => {
                     role: req.body.role,
                     group: req.body.group,
                     authId: newAuth._id,
+                    language: "zh-HK"
                 });
 
                 await newUserInfo.save();
@@ -194,10 +197,8 @@ exports.signup = catchAsync(async (req, res, next) => {
 
                 res.status(200).json({
                     status: 'success',
-                    data: {
-                        user: user,
-                        log: log
-                    }
+                    user: user,
+                    log: log
                 });
             }
         });
@@ -209,13 +210,10 @@ exports.login = catchAsync(async (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
         if (err) throw err;
         if (!user) {
-            res.status(409).json({
+            res.status(200).json({
                 status: 'error',
                 message: '[ERROR] Authentication Failure',
-                data: {
-                    isAuthenticated: false,
-                    user: null
-                }
+                isAuthenticated: false,
             });
         } else {
             req.logIn(user, async (err) => {
@@ -232,13 +230,11 @@ exports.login = catchAsync(async (req, res, next) => {
 
                 res.status(200).json({
                     status: 'success',
-                    data: {
-                        isAuthenticated: true,
-                        id: req.user._id,
-                        fullname: req.user.fullname,
-                        username: req.user.username,
-                        createdAt: req.user.createdAt
-                    }
+                    isAuthenticated: true,
+                    id: req.user._id,
+                    fullname: req.user.fullname,
+                    username: req.user.username,
+                    createdAt: req.user.createdAt
                 });
             })
         }

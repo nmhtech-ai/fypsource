@@ -1,0 +1,20 @@
+.row:hover {
+	cursor: pointer;
+}
+
+.row {
+	font-size: 12px;
+}
+
+.tableHead {
+	font-size: 12px;
+}
+
+.tablediv {
+	margin-bottom: 30px;
+	overflow-x: auto;
+}
+
+::-webkit-scrollbar {
+	width: 0px;
+}

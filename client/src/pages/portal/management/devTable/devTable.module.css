@@ -1,0 +1,14 @@
+.row:hover {
+	cursor: pointer;
+}
+
+.tablediv {
+	margin-bottom: 30px;
+	overflow-x: auto;
+	font-size: 14px;
+}
+
+.select {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
