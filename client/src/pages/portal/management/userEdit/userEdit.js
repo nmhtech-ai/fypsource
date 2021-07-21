@@ -20,9 +20,11 @@ const DevEdit = (props) => {
     const [role, setRole] = useState(props.user.role);
     const [group, setGroup] = useState(props.user.group);
     const [birthdate, setBirthdate] = useState(props.user.birthdate);
-    const [link, setLink] = useState(props.user.linkaccount);
     const [school, setSchool] = useState(props.user.school);
     const [grade, setGrade] = useState(props.user.grade);
+    const [parent, setParent] = useState(props.user.parentId);
+    const [student, setStudent] = useState(props.user.studentId);
+
     const [password, setPassword] = useState("");
     const [confirmDel, setConfirmDel] = useState(false);
     const [editor, setEditor] = useState("");
@@ -32,9 +34,8 @@ const DevEdit = (props) => {
         axios({
             method: "GET",
             withCredentials: true,
-            url: "/getuser",
+            url: "/v1/users/auth",
         }).then((res) => {
-            // console.log(res.data);
             setEditor(res.data.role);
         })
     }, [editor])
@@ -44,43 +45,42 @@ const DevEdit = (props) => {
         switch (e.target.value) {
             case roles.ADMIN: case roles.DEVELOPER: case roles.EDITOR: case roles.BASIC:
                 setGroup(groups.DEVELOPMENT);
-                setFullname("---");
-                setBirthdate("---");
-                setLink("---");
-                setSchool("---");
-                setGrade("---");
+                // setFullname("---");
+                // setBirthdate("---");
+                // setLink("---");
+                // setSchool("---");
+                // setGrade("---");
                 break;
             case roles.STUDENT: default:
                 setGroup(groups.CLIENT);
-                setFullname("");
-                setBirthdate("");
-                setLink("");
-                setSchool("");
-                setGrade("");
+                // setFullname("");
+                // setBirthdate("");
+                // setLink("");
+                // setSchool("");
+                // setGrade("");
                 break;
-            case roles.TEACHER:
-                setGroup(groups.CLIENT);
-                setFullname("---");
-                setBirthdate("---");
-                setLink("---");
-                setSchool("");
-                setGrade("---");
-                break;
+            // case roles.TEACHER:
+            //     setGroup(groups.CLIENT);
+            //     setFullname("---");
+            //     setBirthdate("---");
+            //     setLink("---");
+            //     setSchool("");
+            //     setGrade("---");
+            //     break;
             case roles.PARENT:
                 setGroup(groups.CLIENT);
-                setFullname("---");
-                setBirthdate("---");
-                setLink("");
-                setSchool("---");
-                setGrade("---");
+                // setFullname("---");
+                // setBirthdate("---");
+                // setLink("");
+                // setSchool("---");
+                // setGrade("---");
                 break;
         }
     }
 
     const onSaveHandler = () => {
-        // console.log(id);
         axios({
-            method: 'POST',
+            method: 'PATCH',
             data: {
                 editor: editor,
                 _id: id,
@@ -93,15 +93,14 @@ const DevEdit = (props) => {
                 role: role,
                 group: group,
                 birthdate: birthdate,
-                relatedAcc: link,
+                // relatedAcc: link,
                 school: school,
                 grade: grade,
                 password: password,
             },
             withCredentials: true,
-            url: "/edituser",
+            url: "/v1/users/edit",
         }).then((res) => {
-            // console.log(res.data.duplicate);
             if (res.data.duplicate) {
                 setDuplicate(true);
             } else {
@@ -120,14 +119,14 @@ const DevEdit = (props) => {
 
     const onDeleteHandler = () => {
         axios({
-            method: 'POST',
+            method: 'DELETE',
             data: {
                 editor: editor,
                 _id: id,
                 username: username,
             },
             withCredentials: true,
-            url: "/deleteuser",
+            url: "/v1/users/edit",
         }).then((res) => {
             if (props.user.group === groups.DEVELOPMENT) {
                 props.history.replace("/portal/management/list/developers");
@@ -272,7 +271,7 @@ const DevEdit = (props) => {
                                         <option value={roles.BASIC}>{roles.BASIC}</option>
                                         <option value={roles.STUDENT}>{roles.STUDENT}</option>
                                         <option value={roles.PARENT}>{roles.PARENT}</option>
-                                        <option value={roles.TEACHER}>{roles.TEACHER}</option>
+                                        {/* <option value={roles.TEACHER}>{roles.TEACHER}</option> */}
                                     </select>
                                 </p>
                             </div>
@@ -307,7 +306,7 @@ const DevEdit = (props) => {
                             </div>
                         </div>
                         <div className={[classes.card, "card col-md-4"].join(" ")} >
-                            <div className="card-body">
+                            {/* <div className="card-body">
                                 <h6 className="card-title">Link Account</h6>
                                 <p className="card-text">
                                     <Input
@@ -318,7 +317,7 @@ const DevEdit = (props) => {
                                         onChange={(e) => setLink(e.target.value)}
                                         classassign={["shadow-none", classes.profileInput].join(" ")}
                                     /></p>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={[classes.card, "card col-md-4"].join(" ")} >
                             <div className="card-body">

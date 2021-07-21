@@ -35,6 +35,7 @@ const DevTable = (props) => {
                             <td key={index + 5}>{doc.gender}</td>
                             <td key={index + 6}>{doc.mobile}</td>
                             <td key={index + 7}>{doc.email}</td>
+                            <td key={index + 8}>{doc.birthdate}</td>
                         </tr >
                     </React.Fragment>
                 )
@@ -57,6 +58,7 @@ const DevTable = (props) => {
                             <th className="col" scope="col">Gender</th>
                             <th className="col" scope="col">Mobile</th>
                             <th className="col" scope="col">Email</th>
+                            <th className="col" scope="col">Birthdate</th>
                         </tr>
                     </thead>
                     <tbody>

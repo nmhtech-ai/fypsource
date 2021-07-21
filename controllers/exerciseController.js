@@ -320,32 +320,33 @@ exports.generateQuestion = catchAsync(async (req, res, next) => {
             if (tRatings.ratings[i].score < min) {
                 min = tRatings.ratings[i].score;
                 minPost = i;
-                // console.log(tRatings.ratings[i].typeId);
             }
         }
 
-        question = await Question.findOne({ $or: [{ p1Type: tRatings.ratings[minPost].typeId }, { p2Type: tRatings.ratings[minPost].typeId }] });
-        // console.log(question);
+        let questions = await Question.find({ $or: [{ p1Type: tRatings.ratings[minPost].typeId._id }, { p2Type: tRatings.ratings[minPost].typeId._id }] });
 
-        // let pastQ = null;
-        // do {
+        if (questions !== null) {
+            for (let i = 0; i < questions.length; i++) {
+                pastQ = await PLogs.findOne({ $and: [{ userId: req.user._id }, { questionId: questions[i]._id }] });
+                if (pastQ == null) {
+                    question = questions[i];
+                    break;
+                }
+            }
+        }
 
-        //     question = await Question.find({ $or: [{ p1Type: tRatings.ratings[minPost].typeId }, { p2Type: tRatings.ratings[minPost].typeId }] });
-
-        //     for (let i =)
-        //         pastQ = await PLogs.findOne({ $and: [{ userId: req.user._id }, { questionId: question._id }] });
-        //     if (pastQ !== null) {
-        //         console.log("NONE");
-        //         continue;
-        //     } else {
-        //         break;
-        //     }
-        // } while (1);
-
-
-        // console.log(question);
-
-
+        if (question === null) {
+            questions = await Question.find();
+            console.log(questions);
+            for (let i = 0; i < questions.length; i++) {
+                pastQ = await PLogs.findOne({ $and: [{ userId: req.user._id }, { questionId: questions[i]._id }] });
+                if (pastQ == null) {
+                    question = questions[i];
+                    break;
+                }
+            }
+            console.log(question);
+        }
 
     }
 

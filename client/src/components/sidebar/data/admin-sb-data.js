@@ -19,16 +19,16 @@ const AdminSBData = [
     //     path: '/instructions',
     //     icon: <AiIcons.AiFillInfoCircle />
     // },
-    {
-        title: 'Curriculum',
-        path: '/portal/curriculum',
-        icon: <RiIcons.RiListSettingsLine />
-    },
-    {
-        title: 'Question',
-        path: '/portal/questions',
-        icon: <AiIcons.AiFillQuestionCircle />
-    },
+    // {
+    //     title: 'Curriculum',
+    //     path: '/portal/curriculum',
+    //     icon: <RiIcons.RiListSettingsLine />
+    // },
+    // {
+    //     title: 'Question',
+    //     path: '/portal/questions',
+    //     icon: <AiIcons.AiFillQuestionCircle />
+    // },
     // {
     //     title: 'Question Types',
     //     path: '/questiontypes',
