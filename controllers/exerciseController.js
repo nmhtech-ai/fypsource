@@ -92,7 +92,7 @@ const ratingOverall = async (userId, id, up, time) => {
 const ratingAlgo = (c, w, time) => {
     let score = 0;
     if (c - w < 0) {
-        score = Math.log(Math.max(2, Math.abs(c - w))) * (time / 25) * -1;
+        score = (Math.log(Math.max(2, Math.abs(c - w))) + (25 / time)) * -1;
     } else {
         score = Math.log(Math.max(2, Math.abs(c - w))) * (25 / time);
     }
@@ -104,13 +104,12 @@ const ratingType = async (userId, id, up, time) => {
     let tRatings = await TRating.findOne({ "userId": userId });
     let index = -1;
 
+
     if (tRatings !== null) {
         ratings = tRatings.ratings;
         for (let i = 0; i < ratings.length; i++) {
             if (id == ratings[i].typeId._id) {
                 index = i;
-                console.log(index);
-                console.log(ratings[i]);
             }
         }
 
@@ -197,16 +196,16 @@ exports.answerChecking = catchAsync(async (req, res, next) => {
     } else if (uSteps.length === qSteps.length) {
 
         if (check[1]) {
-            await ratingType(userId, question.p1Type, true, time);
+            await ratingType(userId, String(question.p1Type), true, time);
         } else {
-            await ratingType(userId, question.p1Type, false, time);
+            await ratingType(userId, String(question.p1Type), false, time);
             if (hints !== null) hints = hints + "\n" + question.p1hints[1].hints;
             else hints = question.p1hints[1].hints;
         }
         if (check[3]) {
-            await ratingType(userId, question.p2Type, true, time);
+            await ratingType(userId, String(question.p2Type), true, time);
         } else {
-            await ratingType(userId, question.p2Type, false, time);
+            await ratingType(userId, String(question.p2Type), false, time);
             if (hints !== null) hints = hints + "\n" + question.p2hints[1].hints;
             else hints = question.p2hints[1].hints;
         }
@@ -234,25 +233,33 @@ exports.answerChecking = catchAsync(async (req, res, next) => {
 
             }
 
+            await ratingOverall(userId, "60f0b056d84a1c06a80c99b1", check[6], time);
+
+            if (!check[6]) {
+                await ratingOverall(userId, "60f0b056d84a1c06a80c99b1", false, time);
+            }
+
             if (check[7]) {
                 //Calculation
-                await ratingOverall(userId, "60f0b056d84a1c06a80c99b1", check[6], time);
-                await ratingOverall(userId, "60f0b056d84a1c06a80c99b1", check[8], time);
-                if (check[6] === false || check[9] === false) {
-                    const skill = await Skill.dfindById("60f0b056d84a1c06a80c99b1");
-                    if (hints !== null) hints = hints + "\n" + skill.hints[0].description;
-                    else hints = skill.hints[0].description;
+                if (!check[8]) {
+                    await ratingOverall(userId, "60f0b056d84a1c06a80c99b1", false, time);
                 }
             }
 
-            if (check[6] && check[7] && check[8]) {
-                //Calculation
-                await ratingOverall(userId, "60f0b056d84a1c06a80c99b1", check[10], time);
-                if (!check[10]) {
-                    const skill = await Skill.findById("60f0b056d84a1c06a80c99b1");
-                    if (hints !== null) hints = hints + "\n" + skill.hints[0].description;
-                    else hints = skill.hints[0].description;
-                }
+            if (check[6] === false || check[8] === false) {
+                const skill = await Skill.findById("60f0b056d84a1c06a80c99b1");
+                if (hints !== null) hints = hints + "\n" + skill.hints[0].description;
+                else hints = skill.hints[0].description;
+            }
+        }
+
+        if (check[6] && check[7] && check[8]) {
+            //Calculation
+            await ratingOverall(userId, "60f0b056d84a1c06a80c99b1", check[10], time);
+            if (!check[10]) {
+                const skill = await Skill.findById("60f0b056d84a1c06a80c99b1");
+                if (hints !== null) hints = hints + "\n" + skill.hints[0].description;
+                else hints = skill.hints[0].description;
             }
         }
     }
